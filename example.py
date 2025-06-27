@@ -4,7 +4,7 @@ from transformers import AutoTokenizer
 
 
 def main():
-    path = os.path.expanduser("~/huggingface/Qwen3-0.6B/")
+    path = os.path.expanduser("/models/Qwen/Qwen3-0___6B/")
     tokenizer = AutoTokenizer.from_pretrained(path)
     llm = LLM(path, enforce_eager=True, tensor_parallel_size=1)
 
@@ -13,7 +13,7 @@ def main():
         "introduce yourself",
         "list all prime numbers within 100",
     ]
-    prompts = [
+    templated_prompts = [
         tokenizer.apply_chat_template(
             [{"role": "user", "content": prompt}],
             tokenize=False,
@@ -22,7 +22,7 @@ def main():
         )
         for prompt in prompts
     ]
-    outputs = llm.generate(prompts, sampling_params)
+    outputs = llm.generate(templated_prompts, sampling_params)
 
     for prompt, output in zip(prompts, outputs):
         print("\n")
